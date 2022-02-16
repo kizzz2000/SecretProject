@@ -47,9 +47,9 @@ RED_SPACESHIP = pygame.transform.rotate(pygame.transform.scale(RED_SPACESHIP_IMA
 
 
 def draw_window(red, yellow, red_bullets, yellow_bullets, red_health,
-                yellow_health, angle):
+                yellow_health, angle, position):
     WIN.blit(SPACE, (0, 0))
-    rotate_and_blit(ASTROID_IMAGE, angle)
+    rotate_and_blit(ASTROID_IMAGE, angle, position)
     pygame.draw.rect(WIN, BLACK, BORDER)
 
     red_health_text = HEALTH_FONT.render("Health: " + str(red_health), True, WHITE)
@@ -115,9 +115,9 @@ def draw_winner(text):
     pygame.display.update()
     pygame.time.delay(5000)
 
-def rotate_and_blit(image, angle):
+def rotate_and_blit(image, angle, axis):
     rotated_image = pygame.transform.rotate(image, angle)
-    center = image.get_rect(topleft=(0, 0)).center
+    center = image.get_rect(topleft=(axis, 0)).center
     new_rect = rotated_image.get_rect(center=center)
     WIN.blit(rotated_image, new_rect)
 
@@ -135,10 +135,13 @@ def main():
 
     clock = pygame.time.Clock()
     run = True
-    count = 1
-    if count > 360:
-        count = 1
+    angle = 1
+    position = 0
     while run:
+        if angle > 360:
+            angle = 1
+        if position > WIDTH:
+            position = 0
         clock.tick(FPS)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -182,8 +185,9 @@ def main():
         handle_bullets(yellow_bullets, red_bullets, yellow, red)
 
         draw_window(red, yellow, red_bullets, yellow_bullets, red_health,
-                    yellow_health, 1 * count)
-        count += 1
+                    yellow_health, angle, position)
+        angle += 1
+        position += 1
 
 
 
