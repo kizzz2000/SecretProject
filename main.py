@@ -50,7 +50,7 @@ RED_SPACESHIP = pygame.transform.rotate(pygame.transform.scale(RED_SPACESHIP_IMA
 def draw_window(red, yellow, red_bullets, yellow_bullets, red_health,
                 yellow_health, angle, position):
     # WIN.blit(SPACE, (0, 0))
-    # WIN.blit(blackhole, (599, 300))
+    WIN.blit(blackhole, (599, 300))
 
     pygame.draw.rect(WIN, WHITE, BORDER)
 
