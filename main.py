@@ -122,7 +122,7 @@ def draw_winner(text):
 
 def rotate_and_blit(image, angle, axis):
     rotated_image = pygame.transform.rotate(image, angle)
-    center = image.get_rect(topleft=(X,Y, 400)).center
+    center = image.get_rect(topleft=(axis, 400)).center
     new_rect = rotated_image.get_rect(center=center)
     WIN.blit(rotated_image, new_rect)
 
