@@ -30,13 +30,13 @@ BULLETS_VEL = 7
 MAX_BULLETS = 3
 
 SPACESHIP_WIDTH, SPACESHIP_HEIGHT = 55, 40
-ASTROID_WIDTH, ASTROID_HEIGHT = 200, 200
 YELLOW_HIT = pygame.USEREVENT + 1
 RED_HIT = pygame.USEREVENT + 2
 
-SPACE = pygame.transform.scale(pygame.image.load(os.path.join("space.png")), (WIDTH, HEIGHT))
+SPACE = pygame.transform.scale(pygame.image.load(os.path.join("space1.png")), (WIDTH, HEIGHT))
 
 ASTROID_IMAGE = pygame.transform.scale(pygame.image.load(os.path.join("astroid.png")), (100, 100))
+ASTROID_IMAGE1 = pygame.transform.scale(pygame.image.load(os.path.join("astroid.png")), (50, 50))
 
 
 YELLOW_SPACESHIP_IMAGE = pygame.image.load(os.path.join("spaceship_yellow.png"))
@@ -48,25 +48,27 @@ RED_SPACESHIP = pygame.transform.rotate(pygame.transform.scale(RED_SPACESHIP_IMA
 
 def draw_window(red, yellow, red_bullets, yellow_bullets, red_health,
                 yellow_health, angle, position):
-    WIN.blit(SPACE, (0, 0))
-    rotate_and_blit(ASTROID_IMAGE, angle, position)
-    pygame.draw.rect(WIN, BLACK, BORDER)
+    # WIN.blit(SPACE, (0, 0))
 
-    red_health_text = HEALTH_FONT.render("Health: " + str(red_health), True, WHITE)
-    yellow_health_text = HEALTH_FONT.render("Health: " + str(yellow_health), True, WHITE)
-
-    WIN.blit(red_health_text, (WIDTH - red_health_text.get_width() - 10, 10))
-    WIN.blit(yellow_health_text, (10, 10))
+    pygame.draw.rect(WIN, WHITE, BORDER)
 
     WIN.blit(YELLOW_SPACESHIP, (yellow.x, yellow.y))
     WIN.blit(RED_SPACESHIP, (red.x, red.y))
-
 
     for bullet in red_bullets:
         pygame.draw.rect(WIN, RED, bullet)
 
     for bullet in yellow_bullets:
         pygame.draw.rect(WIN, YELLOW, bullet)
+
+    rotate_and_blit(ASTROID_IMAGE, angle, position)
+    rotate_and_blit(ASTROID_IMAGE1, angle, position)
+
+    red_health_text = HEALTH_FONT.render("Health: " + str(red_health), True, WHITE)
+    yellow_health_text = HEALTH_FONT.render("Health: " + str(yellow_health), True, WHITE)
+
+    WIN.blit(red_health_text, (WIDTH - red_health_text.get_width() - 10, 10))
+    WIN.blit(yellow_health_text, (10, 10))
 
     pygame.display.update()
 
@@ -94,7 +96,7 @@ def yellow_movement(keys_pressed, yellow):
         yellow.x += VEL
     if keys_pressed[pygame.K_w] and yellow.y - VEL > 0:  # UP
         yellow.y -= VEL
-        #                                     speed,   boarder of window    + pixes so it doesn't cicp though the window.
+        #                                     speed,   boarder of window    + pixes so it doesn't clip though the window.
     if keys_pressed[pygame.K_s] and yellow.y + VEL + yellow.height < HEIGHT - 10:  # DOWN
         yellow.y += VEL
 
@@ -117,7 +119,7 @@ def draw_winner(text):
 
 def rotate_and_blit(image, angle, axis):
     rotated_image = pygame.transform.rotate(image, angle)
-    center = image.get_rect(topleft=(axis, 0)).center
+    center = image.get_rect(topleft=(axis, 400)).center
     new_rect = rotated_image.get_rect(center=center)
     WIN.blit(rotated_image, new_rect)
 
@@ -134,10 +136,23 @@ def main():
 
 
     clock = pygame.time.Clock()
+
+    i = 0
+
+
+
     run = True
     angle = 1
     position = 0
     while run:
+        WIN.fill((0, 0, 0))
+        WIN.blit(SPACE, (i, 0))
+        WIN.blit(SPACE, (WIDTH + i, 0))
+        if (i == -WIDTH):
+            WIN.blit(SPACE, (WIDTH + i, 0))
+            i = 0
+        i -= 0.5
+        
         if angle > 360:
             angle = 1
         if position > WIDTH:
