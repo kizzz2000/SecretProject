@@ -6,7 +6,7 @@ pygame.init()
 width = 1000
 height = 500
 window = pygame.display.set_mode((width, height))
-bg_img = pygame.image.load('space.png')
+bg_img = pygame.image.load('lightspeed.png')
 bg_img = pygame.transform.scale(bg_img, (width, height))
 
 i = 0
@@ -19,7 +19,7 @@ while runing:
     if (i == -width):
         window.blit(bg_img, (width + i, 0))
         i = 0
-    i -= 0.5
+    i -= 8
     for event in pygame.event.get():
         if event.type == QUIT:
             runing = False

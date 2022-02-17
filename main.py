@@ -34,6 +34,7 @@ YELLOW_HIT = pygame.USEREVENT + 1
 RED_HIT = pygame.USEREVENT + 2
 
 SPACE = pygame.transform.scale(pygame.image.load(os.path.join("space1.png")), (WIDTH, HEIGHT))
+blackhole = pygame.transform.scale(pygame.image.load(os.path.join("blackhole.png")), (300, 300))
 
 ASTROID_IMAGE = pygame.transform.scale(pygame.image.load(os.path.join("astroid.png")), (100, 100))
 ASTROID_IMAGE1 = pygame.transform.scale(pygame.image.load(os.path.join("astroid.png")), (50, 50))
@@ -49,6 +50,7 @@ RED_SPACESHIP = pygame.transform.rotate(pygame.transform.scale(RED_SPACESHIP_IMA
 def draw_window(red, yellow, red_bullets, yellow_bullets, red_health,
                 yellow_health, angle, position):
     # WIN.blit(SPACE, (0, 0))
+    # WIN.blit(blackhole, (599, 300))
 
     pygame.draw.rect(WIN, WHITE, BORDER)
 
@@ -63,6 +65,7 @@ def draw_window(red, yellow, red_bullets, yellow_bullets, red_health,
 
     rotate_and_blit(ASTROID_IMAGE, angle, position)
     rotate_and_blit(ASTROID_IMAGE1, angle, position)
+    galaxy_rotate_and_blit(blackhole, angle, position)
 
     red_health_text = HEALTH_FONT.render("Health: " + str(red_health), True, WHITE)
     yellow_health_text = HEALTH_FONT.render("Health: " + str(yellow_health), True, WHITE)
@@ -119,7 +122,13 @@ def draw_winner(text):
 
 def rotate_and_blit(image, angle, axis):
     rotated_image = pygame.transform.rotate(image, angle)
-    center = image.get_rect(topleft=(axis, 400)).center
+    center = image.get_rect(topleft=(X,Y, 400)).center
+    new_rect = rotated_image.get_rect(center=center)
+    WIN.blit(rotated_image, new_rect)
+
+def galaxy_rotate_and_blit(image, angle, axis1):
+    rotated_image = pygame.transform.rotate(image, angle)
+    center = image.get_rect(topleft=(axis1, 800)).center
     new_rect = rotated_image.get_rect(center=center)
     WIN.blit(rotated_image, new_rect)
 
@@ -139,13 +148,10 @@ def main():
 
     i = 0
 
-
-
     run = True
     angle = 1
     position = 0
     while run:
-        WIN.fill((0, 0, 0))
         WIN.blit(SPACE, (i, 0))
         WIN.blit(SPACE, (WIDTH + i, 0))
         if (i == -WIDTH):
