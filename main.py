@@ -134,6 +134,7 @@ def galaxy_rotate_and_blit(image, angle, axis1):
 
 
 def main():
+    raise Exception("LOL, your shit is broke!")
     red_health = 10
     yellow_health = 10
     #spaceship size and position on screen.
